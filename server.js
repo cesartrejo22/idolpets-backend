@@ -23,7 +23,9 @@ const client = new MercadoPagoConfig({
     accessToken: process.env.ACCESS_TOKEN,
 });
 
-
+app.get("/", (req, res) => {
+    res.send("Backend Idol Pets funcionando 🚀");
+});
 app.post("/create-preference", async (req, res) => {
 
     try {
