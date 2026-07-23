@@ -11,12 +11,13 @@ const app = express();
 // Configuración CORS
 app.use(cors({
     origin: [
-        "http://localhost:5174",
         "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
         "https://idolpets.shop",
         "https://www.idolpets.shop"
     ],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
 }));
 
@@ -42,6 +43,7 @@ app.post("/create-preference", async (req, res) => {
     try {
 
         const { items } = req.body;
+
 
         const preference = new Preference(client);
 
@@ -88,6 +90,7 @@ app.post("/create-preference", async (req, res) => {
 
         console.log("Error Mercado Pago:", error);
 
+
         res.status(500).json({
             error: error.message
         });
@@ -97,8 +100,8 @@ app.post("/create-preference", async (req, res) => {
 });
 
 
-// Levantar servidor
-app.listen(process.env.PORT || 3001, ()=>{
+// Encender servidor
+app.listen(process.env.PORT || 3001, () => {
 
     console.log(
         `Servidor corriendo en puerto ${process.env.PORT || 3001}`
