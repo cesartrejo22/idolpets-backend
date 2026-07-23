@@ -8,24 +8,35 @@ dotenv.config();
 const app = express();
 
 
-// Permitir solo tu tienda
+// Configuración CORS
 app.use(cors({
     origin: [
+        "http://localhost:5174",
+        "http://localhost:5173",
         "https://idolpets.shop",
         "https://www.idolpets.shop"
-    ]
+    ],
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
 }));
+
 
 app.use(express.json());
 
 
+// Configuración Mercado Pago
 const client = new MercadoPagoConfig({
     accessToken: process.env.ACCESS_TOKEN,
 });
 
+
+// Ruta de prueba
 app.get("/", (req, res) => {
     res.send("Backend Idol Pets funcionando 🚀");
 });
+
+
+// Crear preferencia Mercado Pago
 app.post("/create-preference", async (req, res) => {
 
     try {
@@ -73,13 +84,12 @@ app.post("/create-preference", async (req, res) => {
         });
 
 
-
     } catch(error) {
 
-        console.log(error);
+        console.log("Error Mercado Pago:", error);
 
         res.status(500).json({
-            error:error.message
+            error: error.message
         });
 
     }
@@ -87,11 +97,11 @@ app.post("/create-preference", async (req, res) => {
 });
 
 
-
+// Levantar servidor
 app.listen(process.env.PORT || 3001, ()=>{
 
     console.log(
-      `Servidor corriendo en puerto ${process.env.PORT || 3001}`
+        `Servidor corriendo en puerto ${process.env.PORT || 3001}`
     );
 
 });
